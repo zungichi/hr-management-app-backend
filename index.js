@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV != 'production'){
+    require('dotenv').config();
+}
+
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -5,10 +9,15 @@ const MongoDBStore = require("connect-mongo");
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const userRouter = require('./routes/user');
+const employeeRouter = require('./routes/employee');
 const {User} = require('./models/user');
 
 const app = express();
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/hr-management';
+// const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/hr-management';
+const DB_USERNAME = encodeURIComponent(process.env.DB_USERNAME)
+const DB_PASSWORD = encodeURIComponent(process.env.DB_PASSWORD)
+
+const dbUrl = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@hr-management.aw4qonc.mongodb.net/hr-management`;
 
 mongoose.connect(dbUrl);
 
@@ -54,6 +63,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(express.json());
 app.use('/user', userRouter);
+app.use('/employee', employeeRouter)
 
 app.get('/', (req, res) => {
     res.send('HR-Management-App');

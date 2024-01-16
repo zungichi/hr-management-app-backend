@@ -21,6 +21,7 @@ module.exports.addUser = async (req, res) => {
 module.exports.getAllUser = async (req, res) => {
     try{
         const users = await User.find().populate({path:'roleID'});
+        console.log(users)
         res.json({ret:true, msg:'Get users success', data:users});
     }
     catch(err){

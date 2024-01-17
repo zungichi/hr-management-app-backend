@@ -9,5 +9,6 @@ router.route('/')
 
 router.route('/:employeeID')
     .delete(isLogin, isAdmin, employeeController.deleteEmployee)
+    .put(isLogin, isAdmin, employeeController.updateEmployee)
 
 module.exports = router;

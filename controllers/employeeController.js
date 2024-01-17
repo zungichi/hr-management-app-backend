@@ -34,6 +34,32 @@ module.exports.deleteEmployee = async (req, res) => {
         res.json({res:true, msg:'Delete employee success', data:userInfo});
     }
     else{
-        res.json({res:false, msg:'Input data not complete', data:null});
+        res.json({res:false, msg:'User ID not parse', data:null});
+    }
+}
+
+module.exports.updateEmployee = async (req, res) => {
+    const body = req.body;
+    const employeeID = req.params.employeeID;
+    if (employeeID){
+        if (body.usercode && body.firstname && body.lastname && body.birthdate && body.positionID && body.departmentID){
+            const updateData = {
+                usercode: body.usercode,
+                firstname: body.firstname,
+                lastname: body.lastname,
+                phone: body.phone,
+                birthdate: body.birthdate,
+                positionID: body.positionID,
+                departmentID: body.departmentID
+            }
+            const userInfo = await userModel.UserInfo.findByIdAndUpdate(employeeID, updateData);
+            res.json({res:true, msg:'Update employee success', data:userInfo});
+        }
+        else{
+            res.json({res:false, msg:'Input data not complete', data:null});
+        }
+    }
+    else{
+        res.json({res:false, msg:'User ID not parse', data:null});
     }
 }
